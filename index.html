@@ -7,14 +7,23 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="styles.css">
   <script src="script.js" defer></script>
-  <title>Batman</title>
-  <link rel="icon" href="/batman.jpg">
+  <title>?????</title>
+  <link rel="icon" href="/profile.webp">
 </head>
 
 <body>
   <div class="menu">
     <div class="menuinner">
       <button class="sbn startgame" onclick="start()">Start</button>
+      <select class="leveloptions" style="text-align: center;">
+        <option disabled selected value="levelname" style="display: none;">Levels</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+      <!-- <button class="sbn ino" onclick="abc()">Read Instructions</button> -->
+    </div>
+    <div class="menuinner">
       <button class="sbn ino" onclick="abc()">Read Instructions</button>
     </div>
   </div>
@@ -57,41 +66,12 @@
 
   <div class="game invisible">
     <div class="titleh-container">
-      <!-- <h1 class="timer">90</h1> -->
       <h2>Tick - Tock</h2>
+      <h1 class="timer">90</h1>
     </div>
-    <div class="alert-container" data-alert-container></div>
+    <div class="alert-container" data-alert-container>
+    </div>
     <div data-guess-grid class="guess-grid">
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
-      <div class="tile"></div>
     </div>
     <div data-keyboard class="keyboard">
       <button class="key" data-key="0">0</button>
@@ -111,7 +91,7 @@
           </path>
         </svg>
       </button>
-      <button data-enter class="key large"><img src="./batman.jpg" height="28em" width="50em"></button>
+      <button data-enter class="key large"><img src="./batman.jpg" height="22rem" width="45rem"></button>
     </div>
   </div>
 </body>
