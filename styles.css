@@ -376,6 +376,7 @@ div.menu{
     min-height: 100vh;
     width: 100%;
     display: flex;
+    /* flex-wrap: wrap; */
     flex-direction: column; 
     justify-content: center;
     align-items: center;
@@ -384,6 +385,7 @@ div.menu{
     background-image: url(./batman_arkham2.jpg);
     background-size: cover;
     background-position: bottom;
+    gap: 2rem;
     animation: grow 1500ms forwards;
 }
 
@@ -391,7 +393,7 @@ div.menuinner{
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 5rem;
+  gap: 2rem;
   /* animation: grow 1500ms forwards; */
 }
 
@@ -404,10 +406,10 @@ div.menuinner{
   }
 }
 
-button.sbn{
+button.sbn, select.leveloptions{
   width: 9rem;
   height: 3rem;
-  font-size: 15px;
+  font-size: 1rem;
   background-color: hsl(210, 1%, 51%);
   border-radius: 0.5rem;
   background-color: black;
@@ -415,7 +417,7 @@ button.sbn{
   border-color: whitesmoke;
 }
 
-button.sbn:hover{
+button.sbn:hover, select.leveloptions:hover{
   background-color: whitesmoke;
   color: black;
   cursor: pointer;
@@ -428,6 +430,27 @@ button.goback:hover{
   color: whitesmoke;
   cursor: pointer;
 }
+
+/* select.leveloptions{
+  width: 9rem;
+  height: 3rem;
+  font-size: 15px;
+  background-color: hsl(210, 1%, 51%);
+  border-radius: 0.5rem;
+  background-color: black;
+  color: whitesmoke;
+  border-color: whitesmoke;
+}
+
+select.leveloptions:hover{
+  background-color: whitesmoke;
+  color: black;
+  cursor: pointer;
+  border-color: black;
+  
+} */
+
+
 
 div.invisible{
   display: none;
