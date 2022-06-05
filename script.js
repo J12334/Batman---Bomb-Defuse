@@ -1,26 +1,36 @@
 class AudioController{
   constructor() {
-      this.bgMusic = new Audio('bgm.mp3');
-      this.bgMusic.volume = 0.4;
+    this.bgMusic = new Audio('bgm.mp3');
+    this.bgMusic.volume = 0.17;
   }
-  startMusic(){
+
+  startMusic() {
     this.bgMusic.currentTime = 0;
     this.bgMusic.play();
   }
-  stopMusic(){
+
+  stopMusic() {
     this.bgMusic.pause();
-    this.bgMusic.currentTime = 0;
+    this.bgMusic.volume = 0;
+    // this.bgMusic.currentTime = 0;
   }
 
 }
 
 
+function generateGrid(rows){
 
+    let gridarea = document.querySelector(".guess-grid");
+    gridarea.style.gridTemplateRows = `repeat(${rows},3.5em)`;
+    for(let i=0; i<rows*5; i++){
+      
+       let box = document.createElement("div");
+       box.classList.add("tile");
+       gridarea.appendChild(box);
 
+    }
 
-
-
-
+}
 
 
 let getinstruction = document.getElementsByClassName("ino");
@@ -36,28 +46,53 @@ console.log(getinstruction);
 this.ac = new AudioController()
 ac.stopMusic();
 
-function abc(){
+function abc() {
   menu[0].classList.add("invisible");
   instructions[0].classList.remove("invisible");
 };
 
-function btm(){
+function btm() {
   instructions[0].classList.add("invisible");
   menu[0].classList.remove("invisible");
 };
 
+let timerall = document.getElementsByClassName("timer");
+let timer = timerall[0];
 
-function start(){
+let totaltimetocountdown = 90;
+
+function start() {
+  let levels = document.querySelector(".leveloptions");
+  // console.log(levels.value);
+  // in case of error ->
+  if(levels.value === "levelname"){
+    alert("Select one level");
+    // showAlert("You Win", 1000);
+    return;
+  }
+  
+  if(levels.value === "Easy"){
+    generateGrid(6);
+
+  }else if(levels.value === "Medium"){
+    generateGrid(5);
+    totaltimetocountdown = 70;
+    
+  }else{
+    generateGrid(4);
+    totaltimetocountdown = 50;
+  } 
+
+  timer.innerHTML = `${totaltimetocountdown}`;
+
+
   startInteraction();
   menu[0].classList.add("invisible");
   game[0].classList.remove("invisible");
 };
 
 
-let timerall = document.getElementsByClassName("timer");
-let timer = timerall[0];
 
-let totaltimetocountdown = 90;
 
 
 
@@ -79,33 +114,39 @@ const keyboard = document.querySelector("[data-keyboard]")
 const alertContainer = document.querySelector("[data-alert-container]")
 const guessGrid = document.querySelector("[data-guess-grid]")
 const tw = Math.floor(Math.random() * 100000)
-const targetWord = tw.toString();
+let targetWord = tw.toString();
+
+if(targetWord.length < 5){
+   targetWord = 4 + targetWord;
+}
 
 console.log(targetWord);
-console.log(typeof(targetWord));
-
+console.log(typeof (targetWord));
+let timerinterval;
 
 function startInteraction() {
-  setInterval(() => {
+  this.bc = new AudioController()
+  bc.startMusic();
+  timerinterval = setInterval(() => {
     let ts = totaltimetocountdown;
     timer.innerHTML = `${ts}`;
     totaltimetocountdown--;
-    if(totaltimetocountdown <= 0){
+    if (totaltimetocountdown < 0) {
+      this.cc = new AudioController();
+      cc.stopMusic();
       stopInteraction();
       showAlert(targetWord, 5000);
     }
   }, 1000);
-  clearInterval(timer);
-  this.ac = new AudioController()
-  ac.startMusic();
   document.addEventListener("click", handleMouseClick)
   document.addEventListener("keydown", handleKeyPress)
   // updateCountdown();
 }
 
 function stopInteraction() {
-  this.ac = new AudioController()
-  ac.stopMusic();
+  clearInterval(timerinterval);
+  this.sc = new AudioController();
+  sc.stopMusic();
   document.removeEventListener("click", handleMouseClick)
   document.removeEventListener("keydown", handleKeyPress)
 }
@@ -168,33 +209,18 @@ function submitGuess() {
   const activeTiles = [...getActiveTiles()]
   // const activeTiles = getActiveTiles();
   if (activeTiles.length !== WORD_LENGTH) {
-    // showAlert("Not enough letters")
-    // shakeTiles(activeTiles)
     return
   }
-  
-  // let guess = 0;
-  
-  // activeTiles.forEach((tile) => {
-
-  //    guess = (guess * 10) + Number(tile.dataset.letter);
-
-  // });
 
   const guess = activeTiles.reduce((guess, tile) => {
-    
-      return (guess * 10) + Number(tile.dataset.letter);
 
-  },0);
- 
-  // if (!dictionary.includes(guess)) {
-  //   showAlert("Not in word list")
-  //   shakeTiles(activeTiles)
-  //   return
-  // }
- 
+    return (guess * 10) + Number(tile.dataset.letter);
+
+  }, 0);
+
   console.log(guess);
-  stopInteraction()
+  stopInteraction();
+  // guessGrid.setAttribute("readonly",true);
   activeTiles.forEach((...params) => flipTile(...params, guess))
 }
 
@@ -210,27 +236,27 @@ function flipTile(tile, index, array, guess) {
     () => {
       tile.classList.remove("flip")
       if (Number(targetWord[index]) === Number(letter)) {
-               tile.dataset.state = "correct"
-              //  key.classList.add("correct")
-      }else{
-            
-            if(Math.abs(Number(targetWord[index]) - Number(letter)) > 6){
-               tile.dataset.state = "red";
-            }else if(Math.abs(Number(targetWord[index]) - Number(letter)) > 3){
-               tile.dataset.state = "orange";
-            }else{
-               tile.dataset.state = "yellow";
-            }
-            
-      } 
-      
+        tile.dataset.state = "correct"
+        //  key.classList.add("correct")
+      } else {
+
+        if (Math.abs(Number(targetWord[index]) - Number(letter)) > 6) {
+          tile.dataset.state = "red";
+        } else if (Math.abs(Number(targetWord[index]) - Number(letter)) > 3) {
+          tile.dataset.state = "orange";
+        } else {
+          tile.dataset.state = "yellow";
+        }
+
+      }
 
       if (index === array.length - 1) {
         tile.addEventListener(
           "transitionend",
           () => {
-            startInteraction()
+            startInteraction();
             checkWinLose(guess, array)
+            // guessGrid.setAttribute("readonly",false);
           }, {
             once: true
           }
@@ -277,31 +303,18 @@ function shakeTiles(tiles) {
 
 function checkWinLose(guess, tiles) {
   if (guess === Number(targetWord)) {
-    showAlert("You Win", 5000)
-    danceTiles(tiles)
-    stopInteraction()
+    showAlert("You Win", 5000);
+    this.cc = new AudioController();
+    cc.stopMusic();
+    stopInteraction();
     return
   }
 
   const remainingTiles = guessGrid.querySelectorAll(":not([data-letter])")
   if (remainingTiles.length === 0) {
     showAlert(targetWord.toUpperCase(), null)
-    stopInteraction()
+    this.cc = new AudioController();
+    cc.stopMusic();
+    stopInteraction();
   }
 }
-
-// function danceTiles(tiles) {
-//   tiles.forEach((tile, index) => {
-//     setTimeout(() => {
-//       tile.classList.add("dance")
-//       tile.addEventListener(
-//         "animationend",
-//         () => {
-//           tile.classList.remove("dance")
-//         }, {
-//           once: true
-//         }
-//       )
-//     }, (index * DANCE_ANIMATION_DURATION) / 5)
-//   })
-// }
